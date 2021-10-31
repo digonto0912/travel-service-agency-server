@@ -4,7 +4,7 @@ const objectId = require('mongodb').ObjectId;
 require('dotenv').config()
 const cors =require('cors');
 
- 
+
 
 const app  = express();
 const port = process.env.PORT || 5000;
@@ -72,6 +72,9 @@ async function run (){
             const result = await orderCollection.find({email:req.params.email}).toArray();
             console.log(result);
             res.send(result);
+        })
+        app.get ('/hello',(req,res)=>{
+            console.log('hello updated here');
         })
 
         

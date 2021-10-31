@@ -23,6 +23,7 @@ async function run (){
         await client.connect();
         const database = client.db('tourist_plan');
         const tourCollection = database.collection ('deals');
+        const orderCollection = database.collection('orders');
         
         //get deal api 
         app.get('/deals',async(req,res)=>{
@@ -56,6 +57,21 @@ async function run (){
             const query =  {_id:objectId(id)};
             const result = await tourCollection.deleteOne(query);
             res.json(result);
+        })
+
+        //add order to card card
+        app.post('/addOrder',async(req,res)=>{
+            console.log(req.body);
+            const result = await orderCollection.insertOne(req.body);
+            res.send(result);
+            console.log(result);
+        })
+        // get my order
+        app.get('/myOrders/:email',async(req,res)=>{
+            console.log(req.params.email);
+            const result = await orderCollection.find({email:req.params.email}).toArray();
+            console.log(result);
+            res.send(result);
         })
 
         

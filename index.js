@@ -23,7 +23,7 @@ async function run (){
         await client.connect();
         const database = client.db('tourist_plan');
         const tourCollection = database.collection ('deals');
-        const orderCollection = database.collection('orders');
+       const orderCollection = database.collection('orders');
         
         //get deal api 
         app.get('/deals',async(req,res)=>{
@@ -51,13 +51,7 @@ async function run (){
            
 
         })
-        //deleted api
-        app.delete('/deals/:id',async(req,res)=>{
-            const id = req.params.id;
-            const query =  {_id:objectId(id)};
-            const result = await tourCollection.deleteOne(query);
-            res.json(result);
-        })
+        
 
         //add order to card card
         app.post('/addOrder',async(req,res)=>{
@@ -66,16 +60,35 @@ async function run (){
             res.send(result);
             console.log(result);
         })
-        // get my order
+        // get api my order by email id  
         app.get('/myOrders/:email',async(req,res)=>{
             console.log(req.params.email);
             const result = await orderCollection.find({email:req.params.email}).toArray();
             console.log(result);
             res.send(result);
         })
-        app.get ('/hello',(req,res)=>{
-            console.log('hello updated here');
+        //deleted api 
+        app.delete('/deals/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('deleted from client', id)
+            const query = { _id: objectId(id) };
+            const result = await tourCollection.deleteOne(query);
+            console.log('deleted from server', result);
+            res.json(result);
         })
+
+        //delete api for my order 
+        app.delete('/myorders/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log('deleted from client',id);
+            const query = { _id:objectId(id) };
+            const result = await orderCollection.deleteOne(query);
+            console.log('deleted from server',result);
+            res.json(result);
+        })
+
+       
+        
 
         
 
